@@ -1,0 +1,100 @@
+<div layout="column" ng-cloak class="mainLayout" id="mainLayout">
+  <md-content flex layout-padding>
+    <div layout="column" ng-cloak>
+      <md-input-container style="width: 120px;">
+        <label>Sort by:</label>
+        <md-select ng-model="$ctrl.condition" ng-change="$ctrl.loadReviews()">
+          <md-option ng-repeat="sort in $ctrl.sortBy" ng-value="sort.condition">
+            {{sort.name}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+      <md-card ng-repeat="review in $ctrl.data.reviews">
+        <md-card-title layout="row" layout-xs="column">
+          <div leftTitle" flex="25" flex-xs="100" >
+              <div class="reviewLine"><strong>{{review.name}}</strong></div>
+              <div class="reviewLine">
+                  <svg ng-repeat="s in $ctrl.getNumber(review.star) track by $index" style="width:24px;height: 24px;" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                     viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                  <polygon style="fill:#F14742;" points="463.515,0 48.485,0 48.485,512 256,381.446 463.515,512 "/>
+                  <path style="fill:#FFD24D;" d="M388.692,162.487c-0.882-2.716-3.758-5.228-8.513-5.515l-84.734-5.664l-31.571-78.837
+                    c-1.742-4.433-5.021-6.392-7.876-6.392s-6.134,1.959-7.876,6.392l-31.571,78.837l-84.734,5.664
+                    c-4.755,0.287-7.631,2.799-8.513,5.515c-0.882,2.715-0.032,6.439,3.645,9.465l65.222,54.387l-20.797,82.336
+                    c-1.197,4.61,0.305,8.124,2.613,9.801c2.309,1.677,6.114,2.018,10.129-0.544L256,272.712l71.88,45.222
+                    c4.015,2.562,7.819,2.221,10.129,0.544c2.31-1.678,3.81-5.192,2.613-9.801l-20.797-82.336l65.221-54.387
+                    C388.725,168.926,389.575,165.201,388.692,162.487z"/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
+                  </svg>
+              </div>
+              <div class="reviewLine">{{review.createDateString}}</div>
+              <div class="reviewLine deleteClass" ng-click="$ctrl.deleteReview($event,review.guid)">Delete
+              </div>
+          </div>
+          <md-card-title-text flex="75" flex-xs="100">
+            <span class="md-headline">{{review.title}}</span>
+            <span class="md-subhead description">{{review.content}}</span>
+          </md-card-title-text>
+        </md-card-title>
+      </md-card>
+      <div>
+        <md-input-container style="width: 120px;float:right;right:0px;">
+          <label>Current page:</label>
+          <md-select ng-model="$ctrl.currPage" ng-change="$ctrl.loadReviews()">
+            <md-option ng-repeat="s in $ctrl.getNumber($ctrl.data.pageCount) track by $index"
+                       ng-value="$index+1">
+              {{$index+1}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container style="width: 120px;float:right;right:0px;">
+          <label>Page size:</label>
+          <md-select ng-model="$ctrl.pageSize" ng-change="$ctrl.loadReviews()">
+            <md-option ng-repeat="s in $ctrl.getNumber(20) track by $index" ng-value="$index+1">
+              {{$index+1}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+      <md-card style="padding:10px;">
+        <p class="md-subhead">Your Review</p>
+        <form name="projectForm">
+          <md-input-container class="md-block" flex-xs>
+            <label>Your name</label>
+            <input ng-model="$ctrl.username" name="name" id="name" required>
+            <div ng-messages="projectForm.name.$error">
+              <div ng-message="required">Please input your name</div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block" flex-xs>
+            <label>Title</label>
+            <input ng-model="$ctrl.title" name="title" required>
+            <div ng-messages="projectForm.title.$error">
+              <div ng-message="required">Please write a title</div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block" flex-xs>
+            <label>Write your review here</label>
+            <textarea ng-model="$ctrl.content" name="content" required></textarea>
+            <div ng-messages="projectForm.review.$error">
+              <div ng-message="required">Please write a review</div>
+            </div>
+          </md-input-container>
+
+          <p>Star: </p>
+          <md-radio-group ng-model="$ctrl.star" class="md-primary">
+            <md-radio-button style="margin-left:6px;display:inline;" ng-repeat="s in $ctrl.getNumber(5) track by $index"
+                             ng-value="$index+1">
+              {{ $index+1 }}<br/>
+            </md-radio-button>
+          </md-radio-group>
+          <div layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+            <md-button name="submitButton" class="md-raised md-primary"
+                       ng-click="$ctrl.submit()"
+                       ng-disabled="!($ctrl.content) || !($ctrl.name) || !($ctrl.title)">Submit
+            </md-button>
+          </div>
+        </form>
+      </md-card>
+
+    </div>
+  </md-content>
+</div>
